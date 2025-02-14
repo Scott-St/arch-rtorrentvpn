@@ -30,7 +30,7 @@ fi
 libtorrentps_package_name="libtorrent-ps.tar.xz"
 
 # download compiled libtorrent-ps (used by rtorrent-ps)
-rcurl.sh -o "/tmp/${libtorrentps_package_name}" "https://github.com/binhex/packages/raw/master/compiled/${OS_ARCH}/${libtorrentps_package_name}"
+rcurl.sh -o "/tmp/${libtorrentps_package_name}" "https://github.com/rakshasa/rtorrent/releases/download/v0.15.1/libtorrent-0.15.1.tar.gz"
 
 # install libtorrent-ps
 pacman -U "/tmp/${libtorrentps_package_name}" --noconfirm
@@ -38,7 +38,7 @@ pacman -U "/tmp/${libtorrentps_package_name}" --noconfirm
 rtorrentps_package_name="rtorrent-ps.tar.xz"
 
 # download compiled rtorrent-ps (cannot compile during docker build)
-rcurl.sh -o "/tmp/${rtorrentps_package_name}" "https://github.com/binhex/packages/raw/master/compiled/${OS_ARCH}/${rtorrentps_package_name}"
+rcurl.sh -o "/tmp/${rtorrentps_package_name}" "https://github.com/rakshasa/rtorrent/releases/download/v0.15.1/rtorrent-0.15.1.tar.gz"
 
 # install rtorrent-ps
 pacman -U "/tmp/${rtorrentps_package_name}" --noconfirm
