@@ -1,6 +1,8 @@
 **NOTICE**
 
-This image is now deprecated and will no longer be maintained - 14/02/2023
+This image was updated for rtorrent from https://github.com/stickz/rtorrent.
+IRSSI is removed because there are bugs with the newest rutorrent.  Use Autobrr instead.
+Hack job of a docker.  Use at your own risk. 
 
 **Application**
 
