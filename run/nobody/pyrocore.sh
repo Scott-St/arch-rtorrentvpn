@@ -1,13 +1,13 @@
 #!/usr/bin/dumb-init /bin/bash
 
-if [ ! -d "/config/pyrocore" ]; then
+# if [ ! -d "/config/pyrocore" ]; then
 
-	# define path to pyrocore and create pyrocore config
-	pyroadmin --config-dir="/config/pyrocore" --create-config 1> /dev/null
+	# # define path to pyrocore and create pyrocore config
+	# pyroadmin --config-dir="/config/pyrocore" --create-config 1> /dev/null
 
-else
+# else
 
-	# define path to pyrocore config
-	pyroadmin --config-dir="/config/pyrocore" 1> /dev/null
+	# # define path to pyrocore config
+	# pyroadmin --config-dir="/config/pyrocore" 1> /dev/null
 
-fi
+# fi
