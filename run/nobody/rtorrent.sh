@@ -74,7 +74,7 @@ else
 	retry_wait=1
 	while true; do
 
-		if ! pgrep -x "rtorrent main" > /dev/null; then
+		if ! pgrep -x "rtorrent" > /dev/null; then
 
 			retry_count=$((retry_count-1))
 			if [ "${retry_count}" -eq "0" ]; then
