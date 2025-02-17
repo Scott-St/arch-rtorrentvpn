@@ -4,11 +4,12 @@ This image was updated for rtorrent from https://github.com/stickz/rtorrent.
 IRSSI is removed because there are bugs with the newest rutorrent.  Use Autobrr instead.
 Hack job of a docker.  Use at your own risk. 
 
+No testing has been done with openVPN or Privoxy.
+
 **Application**
 
 [rTorrent-ps](https://github.com/pyroscope/rtorrent-ps)<br/>
 [ruTorrent](https://github.com/Novik/ruTorrent)<br/>
-[autodl-irssi](https://github.com/autodl-community/autodl-irssi)<br/>
 [Privoxy](http://www.privoxy.org/)<br/>
 [OpenVPN](https://openvpn.net/)<br/>
 [WireGuard](https://www.wireguard.com/)
