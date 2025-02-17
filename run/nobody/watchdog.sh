@@ -73,22 +73,6 @@ while true; do
 
 			fi
 
-			if [[ "${ENABLE_AUTODL_IRSSI}" == "yes" ]]; then
-
-				# if irssi process not running (could be initial start or maybe due to kill rtorrent due to port/ip change) then start irssi
-				if ! pgrep -x "irssi" > /dev/null; then
-
-					echo "[info] irssi not running"
-
-				else
-
-					# mark as irssi as running
-					irssi_running="true"
-
-				fi
-
-			fi
-
 			# check if rtorrent is running, if not then skip shutdown of process
 			if ! pgrep -x "rtorrent main" > /dev/null; then
 
@@ -157,17 +141,6 @@ while true; do
 
 			fi
 
-			if [[ "${ENABLE_AUTODL_IRSSI}" == "yes" ]]; then
-
-				if [[ "${irssi_running}" == "false" ]]; then
-
-					# run script to start irssi
-					source /home/nobody/irssi.sh
-
-				fi
-
-			fi
-
 			if [[ "${rtorrent_port_change}" == "true" || "${ip_change}" == "true" || "${rtorrent_running}" == "false" ]]; then
 
 				# run script to start rtorrent, it can also perform shutdown of rtorrent if its already running (required for port/ip change)
@@ -206,20 +179,6 @@ while true; do
 		fi
 
 	else
-
-		if [[ "${ENABLE_AUTODL_IRSSI}" == "yes" ]]; then
-
-			# if irssi process not running (could be initial start or maybe due to kill rtorrent due to port/ip change) then start irssi
-			if ! pgrep -x "irssi" > /dev/null; then
-
-				echo "[info] irssi not running"
-
-				# run script to start autodl-irssi
-				source /home/nobody/irssi.sh
-
-			fi
-
-		fi
 
 		# check if rtorrent is running, if not then start via rtorrent.sh
 		if ! pgrep -x "rtorrent main" > /dev/null; then
