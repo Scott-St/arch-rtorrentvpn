@@ -1,5 +1,5 @@
 FROM binhex/arch-int-vpn:latest
-LABEL org.opencontainers.image.authors = "binhex"
+LABEL org.opencontainers.image.authors = "rainman"
 LABEL org.opencontainers.image.source = "https://github.com/binhex/arch-sabnzbd"
 
 # additional files
@@ -31,7 +31,7 @@ RUN chmod +x /root/*.sh /home/nobody/*.sh && \
 #################
 
 # add pyrocore symlinks to path - symlinks from /opt/pyrocore to /home/nobody/bin
-ENV PATH="${PATH}:/home/nobody/bin"
+#ENV PATH="${PATH}:/home/nobody/bin"
 
 # expose port for scgi
 EXPOSE 5000
