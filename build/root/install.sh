@@ -15,6 +15,10 @@ mkdir /home/nobody/bin/
 # pacman packages
 ####
 
+# Update all packages
+pacman -Syu
+
+
 # define pacman packages
 pacman_packages="svn git nginx php-fpm rsync openssl tmux mediainfo php-geoip zip libx264 libvpx xmlrpc-c sox python-pip"
 
@@ -28,63 +32,94 @@ fi
 #
 #
 
-# Installing UDNS
-#
-cd /tmp
-git clone https://github.com/shadowsocks/libudns;
-cd libudns;
-./autogen.sh;
-./configure --prefix=/usr;
-make -j$(nproc) CFLAGS="-O3 -fPIC";
-make -j$(nproc) install;
-cd /tmp;
-rm -R libudns;
+# Create build directory
+mkdir ~/build
 
-# Installing xmlrpc-c
-#
+# Build and install libudns
+cd ~/build && git clone https://github.com/shadowsocks/libudns
+cd libudns
+./autogen.sh
+./configure --prefix=/usr
+make -j$(nproc) CFLAGS="-O3 -fPIC"
+make -j$(nproc) install
 
-#advanced - v1.63.xx (recommended for home users)
-svn checkout svn://svn.code.sf.net/p/xmlrpc-c/code/advanced xmlrpc-c_advanced;
-cd xmlrpc-c_advanced;
+# Clone libtorrent & rtorrent stickz repo
+cd ~/build && git clone https://github.com/stickz/rtorrent/
 
-./configure --prefix=/usr --disable-cplusplus --disable-wininet-client --disable-libwww-client --disable-abyss-server --disable-cgi-server;
-make -j$(nproc) CFLAGS="-O3";
-make -j$(nproc) install;
-cd /tmp;
-rm -R xmlrpc-c_advanced;
+# Build and install libtorrent
+cd ~/build/rtorrent/libtorrent
+./autogen.sh
+./configure --prefix=/usr --enable-aligned --enable-hosted-mode --enable-udns
+make -j$(nproc) CXXFLAGS="-O3 -flto=\"$(nproc)\" -Werror=odr -Werror=lto-type-mismatch -Werror=strict-aliasing"
+make install
 
-# Installing libtorrent
-#
-# We strongly advise to configure with aligned memory access (--enable-aligned) to avoid critical stability issues.
-#
-#We recommend to configure with instrumentation disabled (--disable-instrumentation) to improve performance. This feature has been fixed since version 5.3.
-#
-#We recommend to configure with UDNS enabled (--enable-udns) to improve stability and performance of UDP trackers. This feature is stable as of version 6.0.
-#
-# We do not recommend using file preload. It's better to leave this decision to the Linux Kernel. 
-# You can reduce the overhead of the peer connection protocol, by disabling it entirely at compile time with (--enable-hosted-mode). 
-# If pieces.preload.type is changed from ruTorrent or .rtorrent.rc it will accept the value and ignore it for 100% backwards compatibility.
+# Build and install rtorrent
+cd ~/build/rtorrent/rtorrent
+./autogen.sh
+./configure --prefix=/usr --with-xmlrpc-tinyxml2
+make -j$(nproc) CXXFLAGS="-O3 -flto=\"$(nproc)\" -Werror=odr -Werror=lto-type-mismatch -Werror=strict-aliasing"
+make install
 
-git clone https://github.com/stickz/rtorrent stickz-rtorrent;
-cd stickz-rtorrent/libtorrent;
-./autogen.sh;\
-./configure --prefix=/usr --enable-aligned --enable-hosted-mode --disable-instrumentation --enable-udns;\
-make -j$(nproc) CXXFLAGS="-O3";\
-make -j$(nproc) install;
+# Remove build directory
+rm -rf ~/build
+
+# # Installing UDNS
+# #
+# cd /tmp
+# git clone https://github.com/shadowsocks/libudns;
+# cd libudns;
+# ./autogen.sh;
+# ./configure --prefix=/usr;
+# make -j$(nproc) CFLAGS="-O3 -fPIC";
+# make -j$(nproc) install;
+# cd /tmp;
+# rm -R libudns;
+
+# # Installing xmlrpc-c
+# #
+
+# #advanced - v1.63.xx (recommended for home users)
+# svn checkout svn://svn.code.sf.net/p/xmlrpc-c/code/advanced xmlrpc-c_advanced;
+# cd xmlrpc-c_advanced;
+
+# ./configure --prefix=/usr --disable-cplusplus --disable-wininet-client --disable-libwww-client --disable-abyss-server --disable-cgi-server;
+# make -j$(nproc) CFLAGS="-O3";
+# make -j$(nproc) install;
+# cd /tmp;
+# rm -R xmlrpc-c_advanced;
+
+# # Installing libtorrent
+# #
+# # We strongly advise to configure with aligned memory access (--enable-aligned) to avoid critical stability issues.
+# #
+# #We recommend to configure with instrumentation disabled (--disable-instrumentation) to improve performance. This feature has been fixed since version 5.3.
+# #
+# #We recommend to configure with UDNS enabled (--enable-udns) to improve stability and performance of UDP trackers. This feature is stable as of version 6.0.
+# #
+# # We do not recommend using file preload. It's better to leave this decision to the Linux Kernel. 
+# # You can reduce the overhead of the peer connection protocol, by disabling it entirely at compile time with (--enable-hosted-mode). 
+# # If pieces.preload.type is changed from ruTorrent or .rtorrent.rc it will accept the value and ignore it for 100% backwards compatibility.
+
+# git clone https://github.com/stickz/rtorrent stickz-rtorrent;
+# cd stickz-rtorrent/libtorrent;
+# ./autogen.sh;\
+# ./configure --prefix=/usr --enable-aligned --enable-hosted-mode --disable-instrumentation --enable-udns;\
+# make -j$(nproc) CXXFLAGS="-O3";\
+# make -j$(nproc) install;
 
 
-# Installing rTorrent
-#
+# # Installing rTorrent
+# #
 
-cd ../rtorrent;\
-./autogen.sh;\
-./configure --prefix=/usr --with-xmlrpc-c --with-ncurses;\
-make -j$(nproc) CXXFLAGS="-O3";\
-make -j$(nproc) install;
-cd /tmp;
-rm -R stickz-rtorrent;
+# cd ../rtorrent;\
+# ./autogen.sh;\
+# ./configure --prefix=/usr --with-xmlrpc-c --with-ncurses;\
+# make -j$(nproc) CXXFLAGS="-O3";\
+# make -j$(nproc) install;
+# cd /tmp;
+# rm -R stickz-rtorrent;
 
-cd /;
+cd ~/;
 
 # Done rTorrent install
 
