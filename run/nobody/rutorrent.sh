@@ -166,19 +166,6 @@ ln -fs '/config/rutorrent/conf' '/usr/share/webapps/rutorrent'
 # with existing plugins.ini, new users will not need this, please remove
 cp -f '/usr/share/webapps/rutorrent/conf-backup/plugins.ini' '/config/rutorrent/conf/plugins.ini'
 
-# if autodl-irssi enabled then enable plugin
-if [[ "${ENABLE_AUTODL_IRSSI}" == "yes" ]]; then
-
-	# enable autodl-plugin
-	sed -i -r '/^\[autodl-irssi\]/!b;n;cenabled = yes' '/config/rutorrent/conf/plugins.ini'
-
-else
-
-	# disable autodl-plugin
-	sed -i -r '/^\[autodl-irssi\]/!b;n;cenabled = no' '/config/rutorrent/conf/plugins.ini'
-
-fi
-
 # if php timezone specified then set in php.ini (prevents issues with dst and rutorrent scheduler plugin)
 if [[ ! -z "${PHP_TZ}" ]]; then
 
@@ -204,13 +191,14 @@ if [[ -d "/usr/share/webapps/rutorrent/share" && ! -L "/usr/share/webapps/rutorr
 fi
 
 # if rutorrent share folder doesnt exist then copy default to host config volume (soft linked)
-if [ ! -d "/config/rutorrent/share" ]; then
+# Updated to /usr/share/webapps/rutorrent/php/share/
+if [ ! -d "/config/rutorrent/php/share" ]; then
 
 	echo "[info] rutorrent share folder doesnt exist, copying default to /config/rutorrent/share/..."
 
 	mkdir -p '/config/rutorrent/share'
-	if [[ -d "/usr/share/webapps/rutorrent/share-backup" && ! -L "/usr/share/webapps/rutorrent/share-backup" ]]; then
-		cp -R '/usr/share/webapps/rutorrent/share-backup/'* '/config/rutorrent/share/' 2>/dev/null || true
+	if [[ -d "/usr/share/webapps/rutorrent/php/share-backup" && ! -L "/usr/share/webapps/rutorrent/php/share-backup" ]]; then
+		cp -R '/usr/share/webapps/rutorrent/php/share-backup/'* '/config/rutorrent/share/' 2>/dev/null || true
 	fi
 
 else
@@ -219,8 +207,11 @@ else
 
 fi
 
+/usr/share/webapps/rutorrent/php/share/users/admin/settings/
+
 # create soft link to rutorrent share folder
-ln -fs '/config/rutorrent/share' '/usr/share/webapps/rutorrent'
+# Updated to /usr/share/webapps/rutorrent/php/share/
+ln -fs '/config/rutorrent/share' '/usr/share/webapps/rutorrent/php'
 
 # if defunct plugins-backup folder exists in container then rename back to plugins (for existing users)
 # this change is due to corruption of plugins and updates to plugins causing incompatibility
