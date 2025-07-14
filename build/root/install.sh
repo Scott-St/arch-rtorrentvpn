@@ -140,8 +140,8 @@ mv /tmp/unpack/ffmpeg*/ff* "/usr/bin/"
 ####
 
 # rutorrent
-# v5.1.5-hotfix
-rutorrent_package_name="v5.1.5.zip"
+# v5.1.12-hotfix
+rutorrent_package_name="v5.1.12.zip"
 
 rcurl.sh -o "/tmp/${rutorrent_package_name}" "https://github.com/Novik/ruTorrent/archive/refs/tags/${rutorrent_package_name}"
 unzip "/tmp/${rutorrent_package_name}" -d /tmp/
