@@ -20,7 +20,7 @@ pacman -Syu
 
 
 # define pacman packages
-pacman_packages="svn git nginx php-fpm rsync openssl tmux mediainfo php-geoip zip libx264 libvpx xmlrpc-c sox python-pip"
+pacman_packages="svn git nginx php-fpm rsync openssl tmux mediainfo php-geoip zip libx264 libvpx xmlrpc-c sox python-pip cmake"
 
 # install compiled packages using pacman
 if [[ ! -z "${pacman_packages}" ]]; then
@@ -162,7 +162,14 @@ rcurl.sh -o /tmp/htpasswd.tar.gz "https://dev.scne.xyz/packages/htpasswd.tar.gz"
 tar -xvf /tmp/htpasswd.tar.gz -C /
 
 # Dumptorrent - Plugin Requirement
-github.sh --install-path "/usr/bin" --github-owner "TheGoblinHero" --github-repo "dumptorrent" --compile-src make
+git clone https://github.com/tomcdj71/dumptorrent.git
+cd dumptorrent
+cmake -B build/ -DCMAKE_CXX_COMPILER=g++ -DCMAKE_C_COMPILER=gcc -DCMAKE_BUILD_TYPE=Release -S .
+cmake --build build/ --config Release --parallel $(nproc)
+
+chmod +x build/dumptorrent build/scrapec
+sudo mv build/dumptorrent build/scrapec /usr/local/bin
+cd ~/;
 
 
 # config - nginx
@@ -320,7 +327,7 @@ EOF
 sed -i '/# PERMISSIONS_PLACEHOLDER/{
     s/# PERMISSIONS_PLACEHOLDER//g
     r /tmp/permissions_heredoc
-}' /usr/local/bin/init.sh
+}' /usr/bin/init.sh
 rm /tmp/permissions_heredoc
 
 # env vars
@@ -427,7 +434,7 @@ EOF
 sed -i '/# ENVVARS_PLACEHOLDER/{
     s/# ENVVARS_PLACEHOLDER//g
     r /tmp/envvars_heredoc
-}' /usr/local/bin/init.sh
+}' /usr/bin/init.sh
 rm /tmp/envvars_heredoc
 
 # cleanup
